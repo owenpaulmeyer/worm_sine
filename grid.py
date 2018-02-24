@@ -50,7 +50,7 @@ class Grid:
             self.enter_direction = north
         else: self.enter_direction = south
         
-        current_tile   = self.rows[self.y_pos-1][self.x_pos-1]
+        current_tile   = self.lookup_tile(self.y_pos, self.x_pos)
         exit_direction = current_tile.tile.exit_direction(self.enter_direction)
         self.segment   = Segment(tail, 0.0, self.enter_direction, exit_direction)
 
@@ -59,11 +59,13 @@ class Grid:
         self.next_y_pos              = next_y
         self.next_enter_direction    = next_enter
         
-        next_tile           = self.rows[self.next_y_pos-1][self.next_x_pos-1]
+        next_tile           = self.lookup_tile(self.next_y_pos, self.next_x_pos)
         next_exit_direction = next_tile.tile.exit_direction(self.next_enter_direction)
         self.next_segment   = Segment(head, 0.0, self.next_enter_direction, next_exit_direction)
         
-        
+    def lookup_tile(self, y_pos, x_pos):
+        return self.rows[self.y_pos][self.x_pos]
+    
     def lookup_next_location(self, x, y, exit_direction):
         stay = False
         x_pos = x

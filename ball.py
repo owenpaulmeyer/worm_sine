@@ -15,6 +15,13 @@ class Segment:
         elif self.orientation == head:
             self.percentage += amount
 
+class Worm:
+    def __init__(self, tail, head):
+        self.tail = tail
+        self.head = head
+    
+    
+    
 class Tail:
     def __init__(self):
         self.type = 'tail'
