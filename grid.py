@@ -38,65 +38,10 @@ class Grid:
         return True
         
 
-    def setup_segments(self):
-        self.x_pos = 2
-        self.y_pos = 2
-        rand = random(1)
-        if rand < .25:
-            self.enter_direction = west
-        elif rand < .5:
-            self.enter_direction = east
-        elif rand < .75:
-            self.enter_direction = north
-        else: self.enter_direction = south
-        
-        current_tile   = self.lookup_tile(self.y_pos, self.x_pos)
-        exit_direction = current_tile.tile.exit_direction(self.enter_direction)
-        self.segment   = Segment(tail, 0.0, self.enter_direction, exit_direction)
-
-        (next_x, next_y), next_enter = self.next_location_enter_direction(exit_direction)
-        self.next_x_pos              = next_x
-        self.next_y_pos              = next_y
-        self.next_enter_direction    = next_enter
-        
-        next_tile           = self.lookup_tile(self.next_y_pos, self.next_x_pos)
-        next_exit_direction = next_tile.tile.exit_direction(self.next_enter_direction)
-        self.next_segment   = Segment(head, 0.0, self.next_enter_direction, next_exit_direction)
         
     def lookup_tile(self, y_pos, x_pos):
         return self.rows[self.y_pos][self.x_pos]
-    
-    def lookup_next_location(self, x, y, exit_direction):
-        stay = False
-        x_pos = x
-        y_pos = y
-        # print 'lookup next location ', exit_direction, x_pos, y_pos
-        if exit_direction == north:
-            if y == 1:
-                # stay = True
-                y_pos = self.col_size
-            else:
-                y_pos -= 1
-        elif exit_direction == east:
-            if x == self.row_size:
-                # stay = True
-                x_pos = 1
-            else:
-                x_pos += 1
-        elif exit_direction == south:
-            if y == self.col_size:
-                # stay = True
-                y_pos = 1
-            else:
-                y_pos += 1
-        elif exit_direction == west:
-            if x == 1:
-                # stay = True
-                x_pos = self.row_size
-            else:
-                x_pos -= 1
-        # print 'lookup output ', stay, x_pos, y_pos
-        return (x_pos, y_pos), stay
+
 
     def next_location_enter_direction(self, exit_direction):
         

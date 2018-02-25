@@ -16,10 +16,68 @@ class Segment:
             self.percentage += amount
 
 class Worm:
-    def __init__(self, tail, head):
-        self.tail = tail
-        self.head = head
+    def __init__(self, grid, x_pos, y_pos):
+        self.setup_segments(grid)
     
+    def setup_segments(self, grid, x_pos, y_pos, enter_direction = None):
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        rand = random(1)
+        if enter_direction == None:
+            if rand < .25:
+                self.enter_direction = west
+            elif rand < .5:
+                self.enter_direction = east
+            elif rand < .75:
+                self.enter_direction = north
+            else: self.enter_direction = south
+        else:
+            self.enter_direction = enter_direction
+        
+        current_tile   = self.lookup_tile(self.y_pos, self.x_pos)
+        exit_direction = current_tile.tile.exit_direction(self.enter_direction)
+        self.segment   = Segment(tail, 0.0, self.enter_direction, exit_direction)
+
+        (next_x, next_y), next_enter = self.next_location_enter_direction(exit_direction)
+        self.next_x_pos              = next_x
+        self.next_y_pos              = next_y
+        self.next_enter_direction    = next_enter
+        
+        next_tile           = self.lookup_tile(self.next_y_pos, self.next_x_pos)
+        next_exit_direction = next_tile.tile.exit_direction(self.next_enter_direction)
+        self.next_segment   = Segment(head, 0.0, self.next_enter_direction, next_exit_direction)
+        
+    def lookup_next_location(self, x, y, exit_direction):
+        stay = False
+        x_pos = x
+        y_pos = y
+        # print 'lookup next location ', exit_direction, x_pos, y_pos
+        if exit_direction == north:
+            if y == 1:
+                # stay = True
+                y_pos = self.col_size
+            else:
+                y_pos -= 1
+        elif exit_direction == east:
+            if x == self.row_size:
+                # stay = True
+                x_pos = 1
+            else:
+                x_pos += 1
+        elif exit_direction == south:
+            if y == self.col_size:
+                # stay = True
+                y_pos = 1
+            else:
+                y_pos += 1
+        elif exit_direction == west:
+            if x == 1:
+                # stay = True
+                x_pos = self.row_size
+            else:
+                x_pos -= 1
+        # print 'lookup output ', stay, x_pos, y_pos
+        return (x_pos, y_pos), stay
     
     
 class Tail:
