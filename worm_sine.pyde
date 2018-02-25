@@ -26,7 +26,7 @@ def setup():
 
     grid = Grid(rs,cs,sc,sz)
     
-    tc = Tile(no_segment, tile_t, 250, 250, sz, sc)
+    tc = Tile(tile_t, 250, 250, sz, sc)
     tc.draw()
     
     tile = tc.tile
