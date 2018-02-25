@@ -150,7 +150,7 @@ class Grid:
     def tile(self,rand,idx, idy):
         sz = self.size
         sc = self.scale
-        return Tile(self.random_genesis(rand), idx*sz, idy*sz, sz, sc)
+        return Tile(no_segment, self.random_genesis(rand), idx*sz, idy*sz, sz, sc)
     
     def draw_grid(self):
         for row_idx in range(0, self.row_size):

@@ -26,7 +26,7 @@ def setup():
 
     grid = Grid(rs,cs,sc,sz)
     
-    tc = Tile(tile_t, 250, 250, sz, sc)
+    tc = Tile(no_segment, tile_t, 250, 250, sz, sc)
     tc.draw()
     
     tile = tc.tile
@@ -41,8 +41,8 @@ def setup():
     # print 'next enter ', grid.next_enter_direction
     # print grid.next_x_pos, grid.next_y_pos
     # grid.draw_grid()
-    print no_worm.type
-    print simple_worm.type
+    print no_segment.type
+    print simple_segment.type
 
 
         

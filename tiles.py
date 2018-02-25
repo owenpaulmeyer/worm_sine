@@ -5,20 +5,24 @@ def bounding_box(x, y, size):
     strokeWeight(1)
     rect(x, y, size, size)
 class Tile:
-    def __init__(self, t, x = 0, y = 0, sz = 20, sc = 1):
+    def __init__(self, segment, t, x = 0, y = 0, sz = 20, sc = 1):
         self.x_loc = x
         self.y_loc = y
         self.tile = t
         self.size = sz
         self.scale = sc
+    #     self.segment = segment
 
-    def draw(self, worm = no_worm):
+    # def set_segment(self, segment):
+    #     self.segment = segment
+
+    def draw(self, segment = no_segment):
         # if worm.type == 'segment':
             # print worm.enter_direction, worm.exit_direction, str(self.tile)
         # bounding_box(self.x_loc, self.y_loc, self.size)
         noFill()
         # self.drawFunction(self.tile.draw_f_1, self.tile.draw_f_2, self.tile.draw_f_3, self.tile.draw_f_4)
-        self.tile.drawFunction(self.x_loc, self.y_loc, self.size, self.scale, worm)
+        self.tile.drawFunction(self.x_loc, self.y_loc, self.size, self.scale, segment)
         
 
         
