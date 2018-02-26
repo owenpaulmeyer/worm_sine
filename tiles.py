@@ -26,6 +26,9 @@ class Tile:
             self.segments.popleft()
             print 'A: ', self.segments
 
+    def set_segments(self, segments):
+        self.segments = segments
+        
     def draw(self):
         # print 'drawin'
         # if len(self.segments) > 0:
@@ -40,8 +43,9 @@ class Tile:
     def __str__(self):
         return str(self.tile)
     
-    def set(self, newTile):
+    def set(self, newTile, segments):
         self.tile = newTile
+        self.segments = segments
 
 
 class Tile1:

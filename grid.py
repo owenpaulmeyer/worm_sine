@@ -35,6 +35,8 @@ class Grid:
         
         if self.clock % 10 == 0:
             self.worm_1.cycle()
+            # self.worm_2.cycle()
+            # self.worm_3.cycle()
     
         if (self.clock + 3) % 10 == 0:
             self.worm_2.cycle()
@@ -88,7 +90,7 @@ class Grid:
             while str(existing) == str(tile):
                 rand = int(random(1,8))
                 tile = self.random_tile(rand)
-            self.rows[y_pos-1][x_pos-1].set(tile)
+            self.rows[y_pos-1][x_pos-1].set(tile, existing.segments)
     
     def set_tile(self, tile):
         self.rows[self.y_pos-1][self.x_pos-1].set(tile)
