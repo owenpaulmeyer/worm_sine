@@ -27,7 +27,6 @@ class Grid:
     def increment_clock(self):
         self.clock += 1
         
-        # print self.segment.percentage, self.next_segment.percentage
         self.worm.advance_segments()
         
         if self.clock % 10 == 0:
@@ -44,7 +43,6 @@ class Grid:
     def make_row(self, idy):
         row = []
         for idx in range(1,self.col_size+1):
-            # print idx
             rand = int(random(1,6))
             row.append(self.tile(rand,idx, idy))
         return row
@@ -68,7 +66,6 @@ class Grid:
     def change_pos(self, x, y):
         if x > 0 and x <= self.row_size and y > 0 and y <= self.col_size:
             if x != self.x_pos or y != self.y_pos:
-                # print 'ready'
                 self.ready = True
                 self.x_pos = x
                 self.y_pos = y

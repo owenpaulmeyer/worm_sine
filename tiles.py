@@ -5,6 +5,8 @@ def bounding_box(x, y, size):
     strokeWeight(1)
     rect(x, y, size, size)
 class Tile:
+    def __str__(self):
+        return self.x_pos + ', ' + self.y_pos + ', ' + str(self.segment)
     def __init__(self, t, x = 0, y = 0, sz = 20, sc = 1):
         self.x_pos = x
         self.y_pos = y
@@ -96,7 +98,6 @@ class Tile2:
                 south: west,
                 west:  south
                 }
-        # print 'exit_t2: ', exits[enter_dir]
         return exits[enter_dir]
          
     def draw_f_1(self, x, y, size, scale):
@@ -144,7 +145,6 @@ class Tile3:
                 south: north,
                 west:  east
                 }
-        # print 'exit_t3: ', exits[enter_dir]
         return exits[enter_dir]
      
     def draw_f_1(self, x, y, size, scale):
@@ -208,7 +208,6 @@ class TileT:
                 south: self.west_east,
                 west:  self.south_north
                 }
-        # print 'exit_t4: ', exits[enter_dir]
         return exits[enter_dir]
     
     def draw_f_1(self, x, y, size, scale):
@@ -296,7 +295,6 @@ class Tile4:
                 south: self.west_east,
                 west:  self.south_north
                 }
-        # print 'exit_t4: ', exits[enter_dir]
         return exits[enter_dir]
     
     def draw_f_1(self, x, y, size, scale):
@@ -373,7 +371,6 @@ class Tile5:
                 south: north,
                 west:  east
                 }
-        # print 'exit_t5: ', exits[enter_dir]
         return exits[enter_dir]
 
     def draw_f_1(self, x, y, size, scale):
@@ -432,7 +429,6 @@ class Tile6:
                 south: north,
                 west:  east
                 }
-        # print 'exit_t6: ', exits[enter_dir]
         return exits[enter_dir]
     
     def exit_direction(self, enter_dir):
@@ -523,11 +519,7 @@ def line_args_v(x, y, size, scale, orientation = None, percentage = None, enter_
             return (x+(size/2), y+(size)-(size*percentage), x+(size/2), y+(size))
         elif enter_direction == north:
             return (x+(size/2), y, x+(size/2), y+(size*percentage))
-    
-# def h_line(x, y, size, scale):
-    # line(x, y+(size/2), x+(size), y+(size/2))
-# def v_line(x, y, size, scale):
-    # line(x+(size/2), y, x+(size/2), y+(size))
+
 
 def make_worm(segment, x, y, size, scale):
     if segment.type == None: return
@@ -535,12 +527,6 @@ def make_worm(segment, x, y, size, scale):
     orientation = segment.orientation
     enter_direction = segment.enter_direction
     exit_direction  = segment.exit_direction
-    # print 'making worm', segment.enter_direction, segment.exit_direction
-    # self.orientation     = orientation
-    # self.percentage      = percentage
-    # self.enter_direction = enter_direction
-    # self.exit_direction  = exit_direction
-    # self.type            = 'segment' if orientation != None else 'no_worm')
     stroke(11,14,211, 160)
     strokeWeight(2.6)
     if enter_direction == north:
