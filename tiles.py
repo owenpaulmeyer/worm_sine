@@ -6,19 +6,19 @@ def bounding_box(x, y, size):
     rect(x, y, size, size)
 class Tile:
     def __init__(self, t, x = 0, y = 0, sz = 20, sc = 1):
-        self.x_loc = x
-        self.y_loc = y
+        self.x_pos = x
+        self.y_pos = y
         self.tile = t
         self.size = sz
         self.scale = sc
-        self.segment = None
+        self.segment = no_segment
 
     def set_segment(self, segment):
         self.segment = segment
 
-    def draw(self, segment = no_segment):
+    def draw(self):
         noFill()
-        self.tile.drawFunction(self.x_loc, self.y_loc, self.size, self.scale, segment)
+        self.tile.drawFunction(self.x_pos, self.y_pos, self.size, self.scale, self.segment)
         
 
         

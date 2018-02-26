@@ -31,9 +31,8 @@ class Grid:
         # print self.segment.percentage, self.next_segment.percentage
         self.worm.advance_segments()
         
-        
         if self.clock % 10 == 0:
-            self.worm.cycle(self)
+            self.worm.cycle()
 
         
 
@@ -60,11 +59,7 @@ class Grid:
         for row_idx in range(0, self.row_size):
             for col_idx in range(0, self.col_size):
                 tile = self.rows[row_idx][col_idx]
-                if row_idx == self.y_pos - 1 and col_idx == self.x_pos - 1:
-                    tile.draw(self.segment)
-                elif row_idx == self.next_y_pos - 1 and col_idx == self.next_x_pos - 1:
-                    tile.draw(self.next_segment)
-                else: tile.draw()
+                tile.draw()
     
     def access(self, x, y):
         row = self.rows[y]
@@ -79,18 +74,17 @@ class Grid:
                 self.x_pos = x
                 self.y_pos = y
     
-    def set(self):
-        # print self.ready
+    def set(self, y_pos, x_pos):
+        print 'setting'
         if self.ready:
             rand = int(random(1,6))
             tile = self.random_tile(rand)
-            existing = self.rows[self.y_pos-1][self.x_pos-1]
+            existing = self.rows[y_pos-1][x_pos-1]
             while str(existing) == str(tile):
                 rand = int(random(1,8))
                 tile = self.random_tile(rand)
-            self.rows[self.y_pos-1][self.x_pos-1].set(tile)
-            # print 'not ready'
-            # self.ready = False
+            self.rows[y_pos-1][x_pos-1].set(tile)
+            print 'setted'
     
     def set_tile(self, tile):
         self.rows[self.y_pos-1][self.x_pos-1].set(tile)

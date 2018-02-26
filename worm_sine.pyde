@@ -25,6 +25,7 @@ def setup():
     mod = sz
 
     grid = Grid(rs,cs,sc,sz)
+    grid.increment_clock()
     
     tc = Tile(tile_t, 250, 250, sz, sc)
     tc.draw()
@@ -50,16 +51,16 @@ def setup():
     
     
 clock = 0
-# def draw():
-#     global clock
-#     background(200)
-#     # fill(200,60)
-#     # rect(0,0,500,500)
-#     global mod, grid
-#     grid.increment_clock()
+def draw():
+    global clock
+    background(200)
+    # fill(200,60)
+    # rect(0,0,500,500)
+    global mod, grid
+    grid.increment_clock()
     
-#     # x = mouseX / mod
-#     # y = mouseY / mod
-#     # grid.change_pos(x,y)
-#     # grid.set()
-#     grid.draw_grid()
+    # x = mouseX / mod
+    # y = mouseY / mod
+    # grid.change_pos(x,y)
+    # grid.set()
+    grid.draw_grid()
