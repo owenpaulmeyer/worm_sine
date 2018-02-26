@@ -1,4 +1,5 @@
 from ball import *
+from collections import deque
 
 def bounding_box(x, y, size):
     stroke(1)
@@ -13,16 +14,24 @@ class Tile:
         self.tile = t
         self.size = sz
         self.scale = sc
-        self.segments = []
+        self.segments = deque([])
 
     def set_segment(self, segment):
         self.segments.append(segment)
+        # print 'set ', segment
+        
     def drop_segment(self):
         if len(self.segments) > 0:
-            del self.segments[0]
+            print 'B: ', self.segments
+            self.segments.popleft()
+            print 'A: ', self.segments
 
     def draw(self):
         # print 'drawin'
+        # if len(self.segments) > 0:
+        #     print '>>>>'
+        #     for segment in self.segments:
+        #         print str(segment)
         noFill()
         self.tile.drawFunction(self.x_pos, self.y_pos, self.size, self.scale, self.segments)
         

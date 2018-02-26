@@ -3,7 +3,7 @@ import sys
 
 class Segment:
     def __str__(self):
-        return '' + ' ' + str(self.enter_direction) + ' ' + str(self.exit_direction)
+        return '' + str(self.orientation) + ' ' + str(self.enter_direction) + ' ' + str(self.exit_direction)
     def __init__(self, orientation = None, percentage = None, enter_direction = None, exit_direction = None):
         self.orientation     = orientation
         self.percentage      = percentage
@@ -77,6 +77,7 @@ class Worm:
         next_tail_segment = Segment(tail, 0.0, next_tail_enter_direction, next_tail_exit_direction)
         self.tail_segment = next_tail_segment
         next_tail_tile.set_segment(next_tail_segment)
+        next_tail_tile.drop_segment()
 
         (next_head_x, next_head_y), next_head_enter_direction = self.next_location_enter_direction(next_tail_exit_direction)
         self.head_x_pos           = next_head_x
@@ -88,7 +89,7 @@ class Worm:
         next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction)
         
         next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction)
-        self.head_tile.drop_segment()
+        # self.head_tile.drop_segment()
         next_head_tile.set_segment(next_head_segment)
         self.head_segment = next_head_segment
     
