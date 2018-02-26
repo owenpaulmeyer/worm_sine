@@ -18,7 +18,6 @@ class Tile:
 
     def set_segment(self, segment):
         self.segments.append(segment)
-        # print 'set ', segment
         
     def drop_segment(self):
         if len(self.segments) > 0:
@@ -27,14 +26,12 @@ class Tile:
             # print 'A: ', self.segments
 
     def set_segments(self, segments):
+        for segment in segments:
+            new_direction = self.tile.exit_direction(segment.enter_direction)
+            segment.change_direction(self.tile)
         self.segments = segments
         
     def draw(self):
-        # print 'drawin'
-        # if len(self.segments) > 0:
-        #     print '>>>>'
-        #     for segment in self.segments:
-        #         print str(segment)
         noFill()
         self.tile.drawFunction(self.x_pos, self.y_pos, self.size, self.scale, self.segments)
         
@@ -45,7 +42,7 @@ class Tile:
     
     def set(self, newTile, segments):
         self.tile = newTile
-        self.segments = segments
+        self.set_segments(segments)
 
 
 class Tile1:
@@ -331,11 +328,17 @@ class Tile4:
         else:
             self.south_north = south
             self.west_east   = east
+        # self.exits = {
+        #         north: self.west_east,
+        #         east:  self.south_north,
+        #         south: self.west_east,
+        #         west:  self.south_north
+        #         }
         self.exits = {
-                north: self.west_east,
-                east:  self.south_north,
-                south: self.west_east,
-                west:  self.south_north
+                north: west,
+                east:  south,
+                south: east,
+                west:  north
                 }
         self.enters = {v: k for k, v in self.exits.iteritems()}
         

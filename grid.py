@@ -90,9 +90,6 @@ class Grid:
             while str(existing) == str(new_tile):
                 rand = int(random(1,8))
                 new_tile = self.random_tile(rand)
-            # for segment in existing.segments:
-            #     new_direction = new_tile.exit_direction(segment.enter_direction)
-            #     segment.change_direction(new_direction)
             self.rows[y_pos-1][x_pos-1].set(new_tile, existing.segments)
     
     def set_tile(self, tile):

@@ -15,8 +15,17 @@ class Segment:
     def advance(self, amount = 0.1):
         self.percentage += amount
     
-    def change_direction(self, new_direction):
-        self.exit_direction = new_direction
+    def change_direction(self, tile):
+        new_direction = None
+        if self.orientation == head:
+            new_direction = tile.exit_direction(self.enter_direction)
+            self.exit_direction = new_direction
+        elif self.orientation == tail:
+            new_direction = tile.enter_direction(self.exit_direction)
+            self.enter_direction = new_direction
+        else: print '!!!!!!!!!!!!!!!!!!!!!!!111'
+        if new_direction == None: print 'no new direction'
+        
 
 class Worm:
     def __init__(self, grid, x_pos, y_pos):
