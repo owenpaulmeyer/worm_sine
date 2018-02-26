@@ -59,9 +59,8 @@ class Worm:
         self.head_segment = head_segment
     
     def cycle(self):
-        print 'next0'
                         
-        self.grid.set(self.tail_x_pos, self.tail_y_pos)
+        self.grid.set(self.tail_y_pos, self.tail_x_pos)
         
         self.tail_x_pos = self.head_x_pos
         self.tail_y_pos = self.head_y_pos
@@ -77,18 +76,19 @@ class Worm:
         self.tail_segment = next_tail_segment
         next_tail_tile.set_segment(next_tail_segment)
 
-        (next_x, next_y), next_head_enter_direction = self.next_location_enter_direction(next_tail_exit_direction)
-        self.head_x_pos = next_x
-        self.head_y_pos = next_y
+        (next_head_x, next_head_y), next_head_enter_direction = self.next_location_enter_direction(next_tail_exit_direction)
+        self.head_x_pos           = next_head_x
+        self.head_y_pos           = next_head_y
         self.head_enter_direction = next_head_enter_direction
         
-        next_head_tile           = self.grid.lookup_tile(self.head_y_pos, self.head_x_pos)
-        self.head_tile = next_head_tile
+        next_head_tile           = self.grid.lookup_tile(next_head_y, next_head_x)
+        self.head_tile           = next_head_tile
         next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction)
         
         next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction)
         self.head_segmant = next_head_segment
         next_head_tile.set_segment(next_head_segment)
+        print 'set head', next_head_segment
     
     
     def next_location_enter_direction(self, exit_direction):
