@@ -17,9 +17,9 @@ def setup():
     smooth(8)
     frameRate(1000)
     
-    rs = 5
-    cs = 5
-    sz = 64
+    rs = 6
+    cs = 6
+    sz = 56
     sc = 4.5
     
     mod = sz

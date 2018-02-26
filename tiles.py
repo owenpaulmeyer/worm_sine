@@ -315,19 +315,19 @@ class Tile4:
         self.type = "t4"
         self.south_north = None
         self.west_east   = None
+        self.rand = random(1)
         
 
     def __str__(self):
         return "T4"
     
     def exit_direction(self, enter_dir):
-        rand = random(1)
         if enter_dir == north or enter_dir == south:
-            if rand < .5:
+            if self.rand < .5:
                 return east
             else: return west
         else:
-            if rand < .5:
+            if self.rand < .5:
                 return north
             else: return south
         # return self.exits[enter_dir]
@@ -335,11 +335,11 @@ class Tile4:
     def enter_direction(self, exit_dir):
         rand = random(1)
         if exit_dir == north or exit_dir == south:
-            if rand < .5:
+            if self.rand < .5:
                 return east
             else: return west
         else:
-            if rand < .5:
+            if self.rand < .5:
                 return north
             else: return south
         # return self.enters[exit_dir]
