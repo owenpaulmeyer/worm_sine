@@ -3,6 +3,7 @@ from ball import *
 
 class Grid:
     def __init__(self, rs, cs, sc, sz, dir = west):
+
         self.clock = 0
         self.incr  = 0.2
         
@@ -20,70 +21,28 @@ class Grid:
         
         self.ready = True
         
-        self.setup_segments()
+        # self.setup_segments()
+        self.worm = Worm(self, 2, 2)
+        print 'all set'
 
     def increment_clock(self):
         self.clock += 1
         
         # print self.segment.percentage, self.next_segment.percentage
-        self.advance_segments()
+        self.worm.advance_segments()
         
         
         if self.clock % 10 == 0:
-            self.cycle()
+            self.worm.cycle(self)
 
-    def advance_segments(self):
-        self.segment.advance()
-        self.next_segment.advance()
-        return True
         
 
         
     def lookup_tile(self, y_pos, x_pos):
-        return self.rows[self.y_pos][self.x_pos]
+        tile = self.rows[y_pos][x_pos]
+        return tile
 
 
-    def next_location_enter_direction(self, exit_direction):
-        
-        next_enter_direction = None
-        # print
-        # print 'current_tile ', current_tile
-        # print 'exit ', exit_direction
-        (x_next, y_next), stay = self.lookup_next_location(self.x_pos, self.y_pos, exit_direction)
-        # print 'after lookup ', x_next, y_next, stay
-        # if not stay:
-            # print 'not stay', exit_direction
-            # next_enter_direction = exit_direction.enter()
-            # print 'next enter ', next_enter_direction
-        # else: next_enter_direction = exit_direction
-        next_enter_direction = exit_direction.enter()
-        # print 'next_loc ', x_next, y_next, next_enter_direction
-        # print
-        return (x_next, y_next), next_enter_direction
-    def cycle(self):
-                        
-        self.set()
-        
-        rand = int(random(1,6))
-        tile = self.random_tile(rand)
-        
-        self.x_pos = self.next_x_pos
-        self.y_pos = self.next_y_pos
-        self.enter_direction = self.next_enter_direction
-        
-        current_tile   = self.rows[self.y_pos-1][self.x_pos-1]
-        exit_direction = current_tile.tile.exit_direction(self.enter_direction)
-        self.segment   = Segment(tail, 0.0, self.enter_direction, exit_direction)
-
-        (next_x, next_y), next_enter = self.next_location_enter_direction(exit_direction)
-        self.next_x_pos = next_x
-        self.next_y_pos = next_y
-        self.next_enter_direction = next_enter
-        
-        next_tile           = self.rows[self.next_y_pos-1][self.next_x_pos-1]
-        next_exit_direction = next_tile.tile.exit_direction(self.next_enter_direction)
-        self.next_segment   = Segment(head, 0.0, self.next_enter_direction, next_exit_direction)
-    
     def make_row(self, idy):
         row = []
         for idx in range(1,self.col_size+1):

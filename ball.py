@@ -17,55 +17,94 @@ class Segment:
 
 class Worm:
     def __init__(self, grid, x_pos, y_pos):
-        self.setup_segments(grid)
+        self.grid = grid
+        self.setup_segments(x_pos, y_pos)
     
-    def setup_segments(self, grid, x_pos, y_pos, enter_direction = None):
-        self.x_pos = x_pos
-        self.y_pos = y_pos
+    def setup_segments(self, x_pos, y_pos):
+        self.tail_x_pos = x_pos
+        self.tail_y_pos = y_pos
         rand = random(1)
-        if enter_direction == None:
-            if rand < .25:
-                self.enter_direction = west
-            elif rand < .5:
-                self.enter_direction = east
-            elif rand < .75:
-                self.enter_direction = north
-            else: self.enter_direction = south
-        else:
-            self.enter_direction = enter_direction
         
-        current_tile   = self.lookup_tile(self.y_pos, self.x_pos)
-        exit_direction = current_tile.tile.exit_direction(self.enter_direction)
-        self.segment   = Segment(tail, 0.0, self.enter_direction, exit_direction)
+        if rand < .25:
+            enter_direction = west
+        elif rand < .5:
+            enter_direction = east
+        elif rand < .75:
+            enter_direction = north
+        else:
+            enter_direction = south
+
+        current_tile   = self.grid.lookup_tile(y_pos, x_pos)
+        exit_direction = current_tile.tile.exit_direction(enter_direction) 
+
+        tail_segment = Segment(tail, 0.0, enter_direction, exit_direction)                       
+        current_tile.set_segment(tail_segment)   
 
         (next_x, next_y), next_enter = self.next_location_enter_direction(exit_direction)
-        self.next_x_pos              = next_x
-        self.next_y_pos              = next_y
-        self.next_enter_direction    = next_enter
+        self.head_x_pos              = next_x
+        self.head_y_pos              = next_y
+        next_enter_direction         = next_enter
         
-        next_tile           = self.lookup_tile(self.next_y_pos, self.next_x_pos)
+        next_tile           = self.grid.lookup_tile(self.head_y_pos, self.head_x_pos)
+        next_exit_direction = next_tile.tile.exit_direction(next_enter_direction)
+        
+        head_segment = Segment(head, 0.0, next_enter_direction, next_exit_direction)
+        next_tile.set_segment(head_segment)
+    
+    def cycle(self):
+        print 'CYC'
+                        
+        self.grid.set()
+        
+        self.tail_x_pos = self.head_x_pos
+        self.tail_y_pos = self.head_y_pos
+        self.enter_direction = self.next_enter_direction
+        
+        current_tile   = self.grid.lookup_tile(self.y_pos, self.x_pos)
+        exit_direction = current_tile.tile.exit_direction(self.enter_direction)
+        
+        tail = Segment(tail, 0.0, self.enter_direction, exit_direction)
+        current_tile.set_segment(tail)
+
+        (next_x, next_y), next_enter = self.next_location_enter_direction(exit_direction)
+        self.next_x_pos = next_x
+        self.next_y_pos = next_y
+        self.next_enter_direction = next_enter
+        
+        next_tile           = self.grid.lookup_tile(self.y_pos, self.x_pos)
         next_exit_direction = next_tile.tile.exit_direction(self.next_enter_direction)
-        self.next_segment   = Segment(head, 0.0, self.next_enter_direction, next_exit_direction)
         
+        head = Segment(head, 0.0, self.next_enter_direction, next_exit_direction)
+        next_tile.set_segment(head)
+    
+    
+    def next_location_enter_direction(self, exit_direction):
+        next_enter_direction = None
+        (x_next, y_next), stay = self.lookup_next_location(self.tail_x_pos, self.tail_y_pos, exit_direction)
+        if not stay:
+            next_enter_direction = exit_direction.enter()
+        else: next_enter_direction = exit_direction
+        next_enter_direction = exit_direction.enter()
+        return (x_next, y_next), next_enter_direction
+    
     def lookup_next_location(self, x, y, exit_direction):
         stay = False
         x_pos = x
         y_pos = y
-        # print 'lookup next location ', exit_direction, x_pos, y_pos
         if exit_direction == north:
             if y == 1:
                 # stay = True
-                y_pos = self.col_size
+                y_pos = self.grid.col_size
             else:
                 y_pos -= 1
         elif exit_direction == east:
-            if x == self.row_size:
+            if x == self.grid.row_size:
                 # stay = True
                 x_pos = 1
             else:
                 x_pos += 1
         elif exit_direction == south:
-            if y == self.col_size:
+            if y == self.grid.col_size:
                 # stay = True
                 y_pos = 1
             else:
@@ -73,12 +112,15 @@ class Worm:
         elif exit_direction == west:
             if x == 1:
                 # stay = True
-                x_pos = self.row_size
+                x_pos = self.grid.row_size
             else:
                 x_pos -= 1
-        # print 'lookup output ', stay, x_pos, y_pos
         return (x_pos, y_pos), stay
     
+    def advance_segments(self):
+        self.tail.advance()
+        self.head.advance()
+        return True
     
 class Tail:
     def __init__(self):
@@ -246,4 +288,4 @@ north_south = Bi_Directional(north, south)
 head           = Head()
 tail           = Tail()
 no_segment     = Segment()
-simple_segment = Segment(tail, .3, north)
+# simple_segment = Segment(tail, .3, north)

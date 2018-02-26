@@ -29,7 +29,7 @@ def setup():
     tc = Tile(tile_t, 250, 250, sz, sc)
     tc.draw()
     
-    tile = tc.tile
+    # tile = tc.tile
     # print tile.exit_direction(north)
     #
     
@@ -41,24 +41,25 @@ def setup():
     # print 'next enter ', grid.next_enter_direction
     # print grid.next_x_pos, grid.next_y_pos
     # grid.draw_grid()
-    print no_segment.type
-    print simple_segment.type
+    
+    # print no_segment.type
+    # print simple_segment.type
 
 
         
     
     
 clock = 0
-def draw():
-    global clock
-    background(200)
-    # fill(200,60)
-    # rect(0,0,500,500)
-    global mod, grid
-    grid.increment_clock()
+# def draw():
+#     global clock
+#     background(200)
+#     # fill(200,60)
+#     # rect(0,0,500,500)
+#     global mod, grid
+#     grid.increment_clock()
     
-    # x = mouseX / mod
-    # y = mouseY / mod
-    # grid.change_pos(x,y)
-    # grid.set()
-    grid.draw_grid()
+#     # x = mouseX / mod
+#     # y = mouseY / mod
+#     # grid.change_pos(x,y)
+#     # grid.set()
+#     grid.draw_grid()

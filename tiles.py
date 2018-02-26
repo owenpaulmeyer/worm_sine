@@ -11,17 +11,13 @@ class Tile:
         self.tile = t
         self.size = sz
         self.scale = sc
-    #     self.segment = segment
+        self.segment = None
 
     def set_segment(self, segment):
         self.segment = segment
 
     def draw(self, segment = no_segment):
-        # if worm.type == 'segment':
-            # print worm.enter_direction, worm.exit_direction, str(self.tile)
-        # bounding_box(self.x_loc, self.y_loc, self.size)
         noFill()
-        # self.drawFunction(self.tile.draw_f_1, self.tile.draw_f_2, self.tile.draw_f_3, self.tile.draw_f_4)
         self.tile.drawFunction(self.x_loc, self.y_loc, self.size, self.scale, segment)
         
 
@@ -53,7 +49,6 @@ class Tile1:
                 south: east,
                 west:  north
                 }
-        # print 'exit_t1: ', exits[enter_dir]
         return exits[enter_dir]
         
     def draw_f_1(self, x, y, size, scale):
