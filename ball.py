@@ -1,5 +1,6 @@
 import traceback
 import sys
+from tiles import *
 
 class Segment:
     def __str__(self):
@@ -13,6 +14,9 @@ class Segment:
 
     def advance(self, amount = 0.1):
         self.percentage += amount
+    
+    def change_direction(self, new_direction):
+        self.exit_direction = new_direction
 
 class Worm:
     def __init__(self, grid, x_pos, y_pos):

@@ -22,9 +22,9 @@ class Tile:
         
     def drop_segment(self):
         if len(self.segments) > 0:
-            print 'B: ', self.segments
+            # print 'B: ', self.segments
             self.segments.popleft()
-            print 'A: ', self.segments
+            # print 'A: ', self.segments
 
     def set_segments(self, segments):
         self.segments = segments
@@ -51,6 +51,13 @@ class Tile:
 class Tile1:
     def __init__(self):
         self.type = "t1"
+        self.exits = {
+                north: west,
+                east:  south,
+                south: east,
+                west:  north
+                }
+        self.enters = {v: k for k, v in self.exits.iteritems()}
 
     def __str__(self):
         return "T1"
@@ -62,13 +69,10 @@ class Tile1:
         return (self.type) == (other.type)
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: west,
-                east:  south,
-                south: east,
-                west:  north
-                }
-        return exits[enter_dir]
+        return self.exits[enter_dir]
+        
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
         
     def draw_f_1(self, x, y, size, scale):
         set_dark(4 * scale)
@@ -108,18 +112,22 @@ tile_1 = Tile1()
 class Tile2:
     def __init__(self):
         self.type = "t2"
-
-    def __str__(self):
-        return "T2"
-    
-    def exit_direction(self, enter_dir):
-        exits = {
+        self.exits = {
                 north: east,
                 east:  north,
                 south: west,
                 west:  south
                 }
-        return exits[enter_dir]
+        self.enters = {v: k for k, v in self.exits.iteritems()}
+
+    def __str__(self):
+        return "T2"
+    
+    def exit_direction(self, enter_dir):
+        return self.exits[enter_dir]
+        
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
          
     def draw_f_1(self, x, y, size, scale):
         set_dark(4 * scale)
@@ -159,18 +167,22 @@ tile_2 = Tile2()
 class Tile3:
     def __init__(self):
         self.type = "t3"
-
-    def __str__(self):
-        return "T3"
-
-    def exit_direction(self, enter_dir):
-        exits = {
+        self.exits = {
                 north: south,
                 east:  west,
                 south: north,
                 west:  east
                 }
-        return exits[enter_dir]
+        self.enters = {v: k for k, v in self.exits.iteritems()}
+
+    def __str__(self):
+        return "T3"
+
+    def exit_direction(self, enter_dir):
+        return self.exits[enter_dir]
+        
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
      
     def draw_f_1(self, x, y, size, scale):
         set_dark(4 * scale)
@@ -224,19 +236,23 @@ class TileT:
         else:
             self.south_north = south
             self.west_east   = east
+        self.exits = {
+                north: self.west_east,
+                east:  self.south_north,
+                south: self.west_east,
+                west:  self.south_north
+                }
+        self.enters = {v: k for k, v in self.exits.iteritems()}
         
 
     def __str__(self):
         return "T4"
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: self.west_east,
-                east:  self.south_north,
-                south: self.west_east,
-                west:  self.south_north
-                }
-        return exits[enter_dir]
+        return self.exits[enter_dir]
+        
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
     
     def draw_f_1(self, x, y, size, scale):
         ran = random(1)
@@ -315,19 +331,23 @@ class Tile4:
         else:
             self.south_north = south
             self.west_east   = east
+        self.exits = {
+                north: self.west_east,
+                east:  self.south_north,
+                south: self.west_east,
+                west:  self.south_north
+                }
+        self.enters = {v: k for k, v in self.exits.iteritems()}
         
 
     def __str__(self):
         return "T4"
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: self.west_east,
-                east:  self.south_north,
-                south: self.west_east,
-                west:  self.south_north
-                }
-        return exits[enter_dir]
+        return self.exits[enter_dir]
+        
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
     
     def draw_f_1(self, x, y, size, scale):
         ran = random(1)
@@ -386,27 +406,25 @@ tile_4 = Tile4()
 class Tile5:
     def __init__(self):
         self.type = "t5"
+        self.exits = {
+                north: south,
+                east:  west,
+                south: north,
+                west:  east
+                }
+        self.enters = {v: k for k, v in self.exits.iteritems()}
 
     def __str__(self):
         return "T5"
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: south,
-                east:  west,
-                south: north,
-                west:  east
-                }
         return exits[enter_dir]
+        
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: south,
-                east:  west,
-                south: north,
-                west:  east
-                }
-        return exits[enter_dir]
+        return self.exits[enter_dir]
 
     def draw_f_1(self, x, y, size, scale):
         set_dark(4 * scale)
@@ -457,27 +475,26 @@ tile_5 = Tile5()
 class Tile6:
     def __init__(self):
         self.type = "t6"
+        self.exits = {
+                north: south,
+                east:  west,
+                south: north,
+                west:  east
+                }
+        self.enters = {v: k for k, v in self.exits.iteritems()}
 
     def __str__(self):
         return "T6"
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: south,
-                east:  west,
-                south: north,
-                west:  east
-                }
+        
         return exits[enter_dir]
     
     def exit_direction(self, enter_dir):
-        exits = {
-                north: south,
-                east:  west,
-                south: north,
-                west:  east
-                }
-        return exits[enter_dir]
+        return self.exits[enter_dir]
+    
+    def enter_direction(self, exit_dir):
+        return self.enters[exit_dir]
         
     def draw_f_1(self, x, y, size, scale):
         set_dark(4 * scale)

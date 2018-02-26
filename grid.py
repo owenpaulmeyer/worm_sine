@@ -85,12 +85,15 @@ class Grid:
     def set(self, y_pos, x_pos):
         if self.ready:
             rand = int(random(1,6))
-            tile = self.random_tile(rand)
+            new_tile = self.random_tile(rand)
             existing = self.rows[y_pos-1][x_pos-1]
-            while str(existing) == str(tile):
+            while str(existing) == str(new_tile):
                 rand = int(random(1,8))
-                tile = self.random_tile(rand)
-            self.rows[y_pos-1][x_pos-1].set(tile, existing.segments)
+                new_tile = self.random_tile(rand)
+            # for segment in existing.segments:
+            #     new_direction = new_tile.exit_direction(segment.enter_direction)
+            #     segment.change_direction(new_direction)
+            self.rows[y_pos-1][x_pos-1].set(new_tile, existing.segments)
     
     def set_tile(self, tile):
         self.rows[self.y_pos-1][self.x_pos-1].set(tile)
