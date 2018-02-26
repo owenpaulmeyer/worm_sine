@@ -23,7 +23,6 @@ class Grid:
         
         # self.setup_segments()
         self.worm = Worm(self, 2, 2)
-        print 'all set'
 
     def increment_clock(self):
         self.clock += 1
@@ -38,7 +37,7 @@ class Grid:
 
         
     def lookup_tile(self, y_pos, x_pos):
-        tile = self.rows[y_pos][x_pos]
+        tile = self.rows[y_pos-1][x_pos-1]
         return tile
 
 
@@ -75,7 +74,6 @@ class Grid:
                 self.y_pos = y
     
     def set(self, y_pos, x_pos):
-        print 'setting'
         if self.ready:
             rand = int(random(1,6))
             tile = self.random_tile(rand)
@@ -84,7 +82,6 @@ class Grid:
                 rand = int(random(1,8))
                 tile = self.random_tile(rand)
             self.rows[y_pos-1][x_pos-1].set(tile)
-            print 'setted'
     
     def set_tile(self, tile):
         self.rows[self.y_pos-1][self.x_pos-1].set(tile)
