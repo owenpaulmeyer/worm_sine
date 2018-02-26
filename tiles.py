@@ -13,14 +13,18 @@ class Tile:
         self.tile = t
         self.size = sz
         self.scale = sc
-        self.segment = no_segment
+        self.segments = []
 
     def set_segment(self, segment):
-        self.segment = segment
+        self.segments.append(segment)
+    def drop_segment(self):
+        if len(self.segments) > 0:
+            del self.segments[0]
 
     def draw(self):
+        # print 'drawin'
         noFill()
-        self.tile.drawFunction(self.x_pos, self.y_pos, self.size, self.scale, self.segment)
+        self.tile.drawFunction(self.x_pos, self.y_pos, self.size, self.scale, self.segments)
         
 
         
@@ -65,7 +69,9 @@ class Tile1:
     def draw_f_4(self, x, y, size, scale):
         set_light(2 * scale)
         return make_west_2_north_curve(x, y, size, scale)
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'x1'
+        # print ': ' + str(self) + str(segments)
         noFill()
         strokeCap(SQUARE)
         
@@ -81,7 +87,9 @@ class Tile1:
         
         self.draw_f_4(x_loc, y_loc, size, scale)
         
-        make_worm(segment, x_loc, y_loc, size, scale)
+        for segment in segments:
+            make_worm(segment, x_loc, y_loc, size, scale)
+
 tile_1 = Tile1()
 
 class Tile2:
@@ -112,7 +120,9 @@ class Tile2:
     def draw_f_4(self, x, y, size, scale):
         set_light(2 * scale)
         return make_east_2_north_curve(x, y, size, scale)
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'x2'
+        # print ': ' + str(self) + str(segments)
         noFill()
         strokeCap(SQUARE)
         
@@ -128,7 +138,9 @@ class Tile2:
         
         self.draw_f_4(x_loc, y_loc, size, scale)
         
-        make_worm(segment, x_loc, y_loc, size, scale)
+        for segment in segments:
+            make_worm(segment, x_loc, y_loc, size, scale)
+
 tile_2 = Tile2()
 
 class Tile3:
@@ -159,7 +171,9 @@ class Tile3:
     def draw_f_4(self, x, y, size, scale):
         set_light(2 * scale)
         return make_h_line(x, y, size, scale)
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'x3'
+        # print ': ' + self + segments
         noFill()
         strokeCap(SQUARE)
         
@@ -175,7 +189,8 @@ class Tile3:
         
         self.draw_f_4(x_loc, y_loc, size, scale)
         
-        make_worm(segment, x_loc, y_loc, size, scale)
+        for segment in segments:
+            make_worm(segment, x_loc, y_loc, size, scale)
 tile_3 = Tile3()
 
 class TileT:
@@ -246,7 +261,10 @@ class TileT:
         # f2, g2 = make_east_2_north_curve(x, y, size, scale)
         n1 = lambda g: g
         return n1, n1
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'xT'
+        # print ': ' + str(self)
+        # print ': ' + str(segments)
         noFill()
         strokeCap(SQUARE)
         
@@ -262,7 +280,8 @@ class TileT:
         self.draw_f_3(x_loc, y_loc, size, scale)
         
         self.draw_f_4(x_loc, y_loc, size, scale)
-        make_worm(segment, x_loc, y_loc, size, scale)
+        for segment in segments:
+            make_worm(segment, x_loc, y_loc, size, scale)
 tile_t = TileT()
 
 class Tile4:
@@ -329,7 +348,9 @@ class Tile4:
         f1, g1 = make_west_2_north_curve(x, y, size, scale)
         f2, g2 = make_east_2_north_curve(x, y, size, scale)
         return f1, f2
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'x4'
+        # print ': ' + str(self) + str(segments)
         noFill()
         strokeCap(SQUARE)
         
@@ -345,7 +366,8 @@ class Tile4:
         self.draw_f_3(x_loc, y_loc, size, scale)
         
         self.draw_f_4(x_loc, y_loc, size, scale)
-        make_worm(segment, x_loc, y_loc, size, scale)
+        for segment in segments:
+            make_worm(segment, x_loc, y_loc, size, scale)
 tile_4 = Tile4()
 
 class Tile5:
@@ -385,22 +407,25 @@ class Tile5:
     def draw_f_4(self, x, y, size, scale):
         set_light(2 * scale)
         return make_h_line(x, y, size, scale)
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'x5'
+        # print ': ' + str(self) + str(segments)
         noFill()
         strokeCap(SQUARE)
-        enter_direction = segment.enter_direction
-        exit_direction = segment.exit_direction
         
         f, g = self.draw_f_1(x_loc, y_loc, size, scale)
         make_gradient(f, g)
         self.draw_f_1(x_loc, y_loc, size, scale)
         self.draw_f_2(x_loc, y_loc, size, scale)
         
-        if segment.type != None:
-            if segment.enter_direction == south or enter_direction == north:
-                stroke(11,14,211, 160)
-                strokeWeight(2.6)
-                make_v_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
+        for segment in segments:
+            enter_direction = segment.enter_direction
+            exit_direction = segment.exit_direction
+            if segment.type != None:
+                if segment.enter_direction == south or enter_direction == north:
+                    stroke(11,14,211, 160)
+                    strokeWeight(2.6)
+                    make_v_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
         
         f, g = self.draw_f_3(x_loc, y_loc, size, scale)
         make_gradient(f, g)
@@ -408,11 +433,12 @@ class Tile5:
         
         self.draw_f_4(x_loc, y_loc, size, scale)
         # make_worm(segment, x_loc, y_loc, size, scale)
-        if segment.type != None:
-            if segment.enter_direction == east or segment.enter_direction == west:
-                stroke(11,14,211, 160)
-                strokeWeight(2.6)
-                make_h_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
+        for segment in segments:
+            if segment.type != None:
+                if segment.enter_direction == east or segment.enter_direction == west:
+                    stroke(11,14,211, 160)
+                    strokeWeight(2.6)
+                    make_h_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
 tile_5 = Tile5()
 
 class Tile6:
@@ -452,7 +478,9 @@ class Tile6:
     def draw_f_4(self, x, y, size, scale):
         set_light(2 * scale)
         return make_v_line(x, y, size, scale)
-    def drawFunction(self, x_loc, y_loc, size, scale, segment):
+    def drawFunction(self, x_loc, y_loc, size, scale, segments):
+        # print 'x6'
+        # print ': ' + str(self) + str(segments)
         noFill()
         strokeCap(SQUARE)
         
@@ -461,11 +489,12 @@ class Tile6:
         self.draw_f_1(x_loc, y_loc, size, scale)
         self.draw_f_2(x_loc, y_loc, size, scale)
         
-        if segment.type != None:
-            if segment.enter_direction == east or segment.enter_direction == west:
-                stroke(11,14,211, 160)
-                strokeWeight(2.6)
-                make_h_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
+        for segment in segments:
+            if segment.type != None:
+                if segment.enter_direction == east or segment.enter_direction == west:
+                    stroke(11,14,211, 160)
+                    strokeWeight(2.6)
+                    make_h_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
         
         f, g = self.draw_f_3(x_loc, y_loc, size, scale)
         make_gradient(f, g)
@@ -473,11 +502,12 @@ class Tile6:
         
         self.draw_f_4(x_loc, y_loc, size, scale)
         # make_worm(segment, x_loc, y_loc, size, scale)
-        if segment.type != None:
-            if segment.enter_direction == north or segment.enter_direction == south:
-                stroke(11,14,211, 160)
-                strokeWeight(2.6)
-                make_v_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
+        for segment in segments:
+            if segment.type != None:
+                if segment.enter_direction == north or segment.enter_direction == south:
+                    stroke(11,14,211, 160)
+                    strokeWeight(2.6)
+                    make_v_line(x_loc, y_loc, size, scale, segment.orientation, segment.percentage, segment.enter_direction)
 tile_6 = Tile6()
 
 def make_h_line(x, y, size, scale, orientation = None, percentage = None, enter_direction = None):

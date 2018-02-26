@@ -63,7 +63,7 @@ class Worm:
 
         # next_tail_enter_direction = self.head_enter_direction
         # self.tail_enter_direction = next_tail_enter_direction
-        self.tail_tile.set_segment(Segment())
+        self.tail_tile.drop_segment()
         
         (next_tail_x, next_tail_y), next_tail_enter_direction = self.next_location_enter_direction(self.tail_segment.exit_direction)
         self.tail_x_pos = next_tail_x
@@ -88,6 +88,7 @@ class Worm:
         next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction)
         
         next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction)
+        self.head_tile.drop_segment()
         next_head_tile.set_segment(next_head_segment)
         self.head_segment = next_head_segment
     

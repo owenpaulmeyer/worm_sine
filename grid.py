@@ -22,15 +22,25 @@ class Grid:
         self.ready = True
         
         # self.setup_segments()
-        self.worm = Worm(self, 2, 2)
+        self.worm_1 = Worm(self, 2, 2)
+        self.worm_2 = Worm(self, 4, 4)
+        self.worm_3 = Worm(self, 2, 5)
 
     def increment_clock(self):
         self.clock += 1
         
-        self.worm.advance_segments()
+        self.worm_1.advance_segments()
+        self.worm_2.advance_segments()
+        self.worm_3.advance_segments()
         
         if self.clock % 10 == 0:
-            self.worm.cycle()
+            self.worm_1.cycle()
+    
+        if (self.clock + 3) % 10 == 0:
+            self.worm_2.cycle()
+            
+        if (self.clock + 6) % 10 == 0:
+            self.worm_3.cycle()
 
         
 

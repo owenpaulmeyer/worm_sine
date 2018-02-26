@@ -29,6 +29,7 @@ def setup():
     
     tc = Tile(tile_t, 250, 250, sz, sc)
     tc.draw()
+    print 'OK'
     
     # tile = tc.tile
     # print tile.exit_direction(north)
