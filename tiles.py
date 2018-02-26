@@ -315,42 +315,34 @@ class Tile4:
         self.type = "t4"
         self.south_north = None
         self.west_east   = None
-        rand = random(1)
-        if rand < .25:
-            self.south_north = north
-            self.west_east   = west
-        elif rand < .55:
-            self.south_north = north
-            self.west_east   = east
-        elif rand < .75:
-            self.south_north = south
-            self.west_east   = west
-        else:
-            self.south_north = south
-            self.west_east   = east
-        # self.exits = {
-        #         north: self.west_east,
-        #         east:  self.south_north,
-        #         south: self.west_east,
-        #         west:  self.south_north
-        #         }
-        self.exits = {
-                north: west,
-                east:  south,
-                south: east,
-                west:  north
-                }
-        self.enters = {v: k for k, v in self.exits.iteritems()}
         
 
     def __str__(self):
         return "T4"
     
     def exit_direction(self, enter_dir):
-        return self.exits[enter_dir]
+        rand = random(1)
+        if enter_dir == north or enter_dir == south:
+            if rand < .5:
+                return east
+            else: return west
+        else:
+            if rand < .5:
+                return north
+            else: return south
+        # return self.exits[enter_dir]
         
     def enter_direction(self, exit_dir):
-        return self.enters[exit_dir]
+        rand = random(1)
+        if exit_dir == north or exit_dir == south:
+            if rand < .5:
+                return east
+            else: return west
+        else:
+            if rand < .5:
+                return north
+            else: return south
+        # return self.enters[exit_dir]
     
     def draw_f_1(self, x, y, size, scale):
         ran = random(1)
