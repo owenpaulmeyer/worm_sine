@@ -22,12 +22,12 @@ class Tile:
     def drop_segment(self):
         if len(self.segments) > 0:
             # print 'B: ', self.segments
-            self.segments.popleft()
+            return self.segments.popleft()
             # print 'A: ', self.segments
 
     def set_segments(self, segments):
         for segment in segments:
-            new_direction = self.tile.exit_direction(segment.enter_direction)
+            new_direction = self.tile.exit_direction(segment.enter_direction, segment.bias)
             segment.change_direction(self.tile)
         self.segments = segments
         
@@ -65,10 +65,10 @@ class Tile1:
     def __eq__(self, other):
         return (self.type) == (other.type)
     
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         return self.exits[enter_dir]
         
-    def enter_direction(self, exit_dir):
+    def enter_direction(self, exit_dir, bias = None):
         return self.enters[exit_dir]
         
     def draw_f_1(self, x, y, size, scale):
@@ -120,10 +120,10 @@ class Tile2:
     def __str__(self):
         return "T2"
     
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         return self.exits[enter_dir]
         
-    def enter_direction(self, exit_dir):
+    def enter_direction(self, exit_dir, bias = None):
         return self.enters[exit_dir]
          
     def draw_f_1(self, x, y, size, scale):
@@ -175,10 +175,10 @@ class Tile3:
     def __str__(self):
         return "T3"
 
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         return self.exits[enter_dir]
         
-    def enter_direction(self, exit_dir):
+    def enter_direction(self, exit_dir, bias = None):
         return self.enters[exit_dir]
      
     def draw_f_1(self, x, y, size, scale):
@@ -245,10 +245,10 @@ class TileT:
     def __str__(self):
         return "T4"
     
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         return self.exits[enter_dir]
         
-    def enter_direction(self, exit_dir):
+    def enter_direction(self, exit_dir, bias = None):
         return self.enters[exit_dir]
     
     def draw_f_1(self, x, y, size, scale):
@@ -321,28 +321,25 @@ class Tile4:
     def __str__(self):
         return "T4"
     
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         if enter_dir == north or enter_dir == south:
-            if self.rand < .5:
+            if bias == left:
                 return east
             else: return west
         else:
-            if self.rand < .5:
+            if bias == left:
                 return north
             else: return south
-        # return self.exits[enter_dir]
         
-    def enter_direction(self, exit_dir):
-        rand = random(1)
+    def enter_direction(self, exit_dir, bias = None):
         if exit_dir == north or exit_dir == south:
-            if self.rand < .5:
+            if bias == left:
                 return east
             else: return west
         else:
-            if self.rand < .5:
+            if bias == left:
                 return north
             else: return south
-        # return self.enters[exit_dir]
     
     def draw_f_1(self, x, y, size, scale):
         ran = random(1)
@@ -412,13 +409,13 @@ class Tile5:
     def __str__(self):
         return "T5"
     
-    def exit_direction(self, enter_dir):
-        return exits[enter_dir]
+    # def exit_direction(self, enter_dir, bias = None):
+    #     return exits[enter_dir]
         
-    def enter_direction(self, exit_dir):
+    def enter_direction(self, exit_dir, bias = None):
         return self.enters[exit_dir]
     
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         return self.exits[enter_dir]
 
     def draw_f_1(self, x, y, size, scale):
@@ -485,10 +482,10 @@ class Tile6:
         
         return exits[enter_dir]
     
-    def exit_direction(self, enter_dir):
+    def exit_direction(self, enter_dir, bias = None):
         return self.exits[enter_dir]
     
-    def enter_direction(self, exit_dir):
+    def enter_direction(self, exit_dir, bias = None):
         return self.enters[exit_dir]
         
     def draw_f_1(self, x, y, size, scale):

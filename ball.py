@@ -5,12 +5,13 @@ from tiles import *
 class Segment:
     def __str__(self):
         return '' + str(self.orientation) + ' ' + str(self.enter_direction) + ' ' + str(self.exit_direction)
-    def __init__(self, orientation = None, percentage = None, enter_direction = None, exit_direction = None):
+    def __init__(self, orientation = None, percentage = None, enter_direction = None, exit_direction = None, bias = None):
         self.orientation     = orientation
         self.percentage      = percentage
         self.enter_direction = enter_direction
         self.exit_direction  = exit_direction
         self.type            = 'segment' if orientation != None else None
+        self.bias            = bias
 
     def advance(self, amount = 0.1):
         self.percentage += amount
@@ -18,15 +19,19 @@ class Segment:
     def change_direction(self, tile):
         new_direction = None
         if self.orientation == head:
-            new_direction = tile.exit_direction(self.enter_direction)
+            new_direction = tile.exit_direction(self.enter_direction, bias)
             self.exit_direction = new_direction
         elif self.orientation == tail:
-            new_direction = tile.enter_direction(self.exit_direction)
+            new_direction = tile.enter_direction(self.exit_direction, bias)
             self.enter_direction = new_direction
-        else: print '!!!!!!!!!!!!!!!!!!!!!!!111'
-        if new_direction == None: print 'no new direction'
+        # else: print '!!!!!!!!!!!!!!!!!!!!!!!111'
+        # if new_direction == None: print 'no new direction'
         
-
+def bias():
+    rand = random(1)
+    if rand < 0.5: return left
+    else: return right
+    
 class Worm:
     def __init__(self, grid, x_pos, y_pos):
         self.grid = grid
@@ -46,10 +51,12 @@ class Worm:
         else:
             enter_direction = south
 
-        tail_tile   = self.grid.lookup_tile(y_pos, x_pos)
-        exit_direction = tail_tile.tile.exit_direction(enter_direction)
-
-        tail_segment = Segment(tail, 0.0, enter_direction, exit_direction)
+        tail_tile = self.grid.lookup_tile(y_pos, x_pos)
+        tail_bias = bias()
+        exit_direction = tail_tile.tile.exit_direction(enter_direction, tail_bias)
+        
+        tail_segment = Segment(tail, 0.0, enter_direction, exit_direction, tail_bias)
+        
         tail_tile.set_segment(tail_segment)
         self.tail_tile = tail_tile
         self.tail_segment = tail_segment
@@ -64,19 +71,29 @@ class Worm:
         
         head_tile           = self.grid.lookup_tile(self.head_y_pos, self.head_x_pos)
         self.head_tile = head_tile
-        head_exit_direction = head_tile.tile.exit_direction(head_enter_direction)
+        head_bias = bias()
+        head_exit_direction = head_tile.tile.exit_direction(head_enter_direction, head_bias)
         
-        head_segment = Segment(head, 0.0, head_enter_direction, head_exit_direction)
+        head_segment = Segment(head, 0.0, head_enter_direction, head_exit_direction, head_bias)
+        
         head_tile.set_segment(head_segment)
         self.head_segment = head_segment
     
+    def switch_tile(self, y, x):
+        self.grid.set(y, x)
+        
     def cycle(self):
-                        
-        self.grid.set(self.tail_y_pos, self.tail_x_pos)
-
+        y = self.tail_y_pos
+        x = self.tail_x_pos
         # next_tail_enter_direction = self.head_enter_direction
         # self.tail_enter_direction = next_tail_enter_direction
-        self.tail_tile.drop_segment()
+        print '>>>>>'
+        print self.tail_tile.x_pos, self.tail_tile.y_pos, map(str, self.tail_tile.segments), self.tail_tile.tile
+        old_tail = self.tail_tile.drop_segment()
+                
+        self.switch_tile(y, x)
+        print self.tail_tile.x_pos, self.tail_tile.y_pos, map(str, self.tail_tile.segments), self.tail_tile.tile
+        
         
         (next_tail_x, next_tail_y), next_tail_enter_direction = self.next_location_enter_direction(self.tail_segment.exit_direction)
         self.tail_x_pos = next_tail_x
@@ -85,12 +102,16 @@ class Worm:
         
         next_tail_tile   = self.grid.lookup_tile(next_tail_y, next_tail_x)
         self.tail_tile   = next_tail_tile
-        next_tail_exit_direction = next_tail_tile.tile.exit_direction(next_tail_enter_direction)
+        tail_bias = old_tail.bias
+        next_tail_exit_direction = next_tail_tile.tile.exit_direction(next_tail_enter_direction, tail_bias)
         
-        next_tail_segment = Segment(tail, 0.0, next_tail_enter_direction, next_tail_exit_direction)
+        next_tail_segment = Segment(tail, 0.0, next_tail_enter_direction, next_tail_exit_direction, tail_bias)
+        
         self.tail_segment = next_tail_segment
         next_tail_tile.set_segment(next_tail_segment)
         next_tail_tile.drop_segment()
+        
+
 
         (next_head_x, next_head_y), next_head_enter_direction = self.next_location_enter_direction(next_tail_exit_direction)
         self.head_x_pos           = next_head_x
@@ -99,12 +120,16 @@ class Worm:
         
         next_head_tile           = self.grid.lookup_tile(next_head_y, next_head_x)
         self.head_tile           = next_head_tile
-        next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction)
+        head_bias = old_tail.bias
+        next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction, head_bias)
         
-        next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction)
+        next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction, head_bias)
+        
         # self.head_tile.drop_segment()
         next_head_tile.set_segment(next_head_segment)
         self.head_segment = next_head_segment
+
+
     
     
     def next_location_enter_direction(self, exit_direction):
@@ -311,6 +336,18 @@ class West:
     def get_type(self):
         return self.type
 
+class Left:
+    def __str__(self):
+        return 'left'
+    def __init__(self):
+        self.type = 'left'
+class Right:
+    def __str__(self):
+        return 'right'
+    def __init__(self):
+        self.type = 'right'
+
+
 north = North()
 east  = East()
 south = South()
@@ -318,7 +355,12 @@ west  = West()
 east_west   = Bi_Directional(east, west)
 north_south = Bi_Directional(north, south)
 
-head           = Head()
-tail           = Tail()
-no_segment     = Segment()
+head = Head()
+tail = Tail()
+
+left  = Left()
+right = Right()
+
+no_segment = Segment()
+
 # simple_segment = Segment(tail, .3, north)

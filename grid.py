@@ -37,9 +37,8 @@ class Grid:
         
         if self.clock % 10 == 0:
             self.worm_1.cycle()
-            # self.worm_2.cycle()
-            # self.worm_3.cycle()
     
+            
         if (self.clock + 3) % 10 == 0:
             self.worm_2.cycle()
             
