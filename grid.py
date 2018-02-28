@@ -118,7 +118,7 @@ class Grid:
             return tile_2
         # else:
         #     return tile_6
-    def random_genesis(self, rand):
+    def random_genesis(self, rand): return self.random_tile(rand)
         # if rand==1:
         #     return Tile1()
         # elif rand==2:
@@ -137,7 +137,7 @@ class Grid:
         #     return Tile2()
         # else:
         #     return Tile1()
-        return tile_6
+        # return tile_6
         
     def set_abunch(self):
         if self.ready and self.x_pos <= self.row_size - 1 and self.y_pos <= self.col_size - 1:

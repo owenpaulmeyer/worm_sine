@@ -83,51 +83,51 @@ class Worm:
         self.grid.set(y, x)
         
     def cycle(self):
+        old_head_segment  = self.head_tile.segments[0]
+        
         y = self.tail_y_pos
         x = self.tail_x_pos
-        # next_tail_enter_direction = self.head_enter_direction
-        # self.tail_enter_direction = next_tail_enter_direction
-        print '>>>>>'
-        print self.tail_tile.x_pos, self.tail_tile.y_pos, map(str, self.tail_tile.segments), self.tail_tile.tile
-        old_tail = self.tail_tile.drop_segment()
-                
-        self.switch_tile(y, x)
-        print self.tail_tile.x_pos, self.tail_tile.y_pos, map(str, self.tail_tile.segments), self.tail_tile.tile
         
+        self.tail_tile.drop_segment()
+        
+        self.switch_tile(y, x)
         
         (next_tail_x, next_tail_y), next_tail_enter_direction = self.next_location_enter_direction(self.tail_segment.exit_direction)
+        
         self.tail_x_pos = next_tail_x
         self.tail_y_pos = next_tail_y
-        self.tail_enter_direction = next_tail_enter_direction
         
         next_tail_tile   = self.grid.lookup_tile(next_tail_y, next_tail_x)
-        self.tail_tile   = next_tail_tile
-        tail_bias = old_tail.bias
+        tail_bias = old_head_segment.bias
         next_tail_exit_direction = next_tail_tile.tile.exit_direction(next_tail_enter_direction, tail_bias)
+
+        (next_head_x, next_head_y), next_head_enter_direction = self.next_location_enter_direction(next_tail_exit_direction)
+        
+        next_head_tile           = self.grid.lookup_tile(next_head_y, next_head_x)
+        self.head_tile           = next_head_tile
+        head_bias = bias()
+        next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction, head_bias)
+        
+        next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction, head_bias)
+        
+        
+        
+        next_head_tile.set_segment(next_head_segment)
+        self.head_segment = next_head_segment
+        
+        
+        self.tail_enter_direction = next_tail_enter_direction
+        self.tail_tile   = next_tail_tile
+        self.head_x_pos           = next_head_x
+        self.head_y_pos           = next_head_y
+        self.head_enter_direction = next_head_enter_direction
+        
         
         next_tail_segment = Segment(tail, 0.0, next_tail_enter_direction, next_tail_exit_direction, tail_bias)
         
         self.tail_segment = next_tail_segment
         next_tail_tile.set_segment(next_tail_segment)
         next_tail_tile.drop_segment()
-        
-
-
-        (next_head_x, next_head_y), next_head_enter_direction = self.next_location_enter_direction(next_tail_exit_direction)
-        self.head_x_pos           = next_head_x
-        self.head_y_pos           = next_head_y
-        self.head_enter_direction = next_head_enter_direction
-        
-        next_head_tile           = self.grid.lookup_tile(next_head_y, next_head_x)
-        self.head_tile           = next_head_tile
-        head_bias = old_tail.bias
-        next_head_exit_direction = next_head_tile.tile.exit_direction(next_head_enter_direction, head_bias)
-        
-        next_head_segment = Segment(head, 0.0, next_head_enter_direction, next_head_exit_direction, head_bias)
-        
-        # self.head_tile.drop_segment()
-        next_head_tile.set_segment(next_head_segment)
-        self.head_segment = next_head_segment
 
 
     
